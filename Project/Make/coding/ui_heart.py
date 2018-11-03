@@ -7,7 +7,7 @@ class UI_heart:
         #size = 56 55
         self.image_heart1 = load_image('heart.png')
         self.image_heart2 = load_image('heart.png')
-        self.image_heart3 = load_image('heart.pn')
+        self.image_heart3 = load_image('heart.png')
         self.button_y = 100
 
     def update(self):

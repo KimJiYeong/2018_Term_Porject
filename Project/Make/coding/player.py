@@ -73,6 +73,7 @@ class IdleState:
 
         boy.timer = 1000
 
+
     @staticmethod
     def exit(boy, event):
         if event == SPACE:
@@ -205,8 +206,6 @@ class Boy:
         #프레임용
         self.change_frame = False
         self.frame_num = 0
-
-
 
     def fire_ball(self):
         ball = Ball(self.x, self.y, self.dir*3)
