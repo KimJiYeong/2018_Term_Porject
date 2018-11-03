@@ -114,9 +114,8 @@ class RunState:
             boy.velocity_y += RUN_SPEED_PPS
         elif event == UP_UP:
             boy.velocity_y -= RUN_SPEED_PPS
-        
-        boy.dir = clamp(-1, boy.velocity_x, 1)
 
+        boy.dir = clamp(-1, boy.velocity_y, 1)
         pass
 
     @staticmethod
@@ -148,7 +147,7 @@ next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
                 UP_UP: RunState, DOWN_DOWN: RunState, UP_DOWN: RunState, DOWN_UP: RunState, SPACE: IdleState },
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
-               UP_UP: IdleState, DOWN_DOWN: IdleState, UP_DOWN: IdleState, DOWN_UP: IdleState, SPACE: IdleState },
+               UP_UP: IdleState, DOWN_DOWN: IdleState, UP_DOWN: IdleState, DOWN_UP: IdleState, SPACE: RunState },
 }
 
 class Boy:
