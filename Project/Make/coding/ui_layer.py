@@ -1,8 +1,8 @@
 from pico2d import *
 
-class Grass:
+class UI_wings:
     def __init__(self):
-        self.image = load_image('back_1.png')
+        self.image = load_image('UI.png')
 
     def update(self):
         pass

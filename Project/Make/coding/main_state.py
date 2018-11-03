@@ -8,7 +8,7 @@ import game_world
 
 from boy import Boy
 from grass import Grass
-
+from ui_layer import UI_wings
 
 name = "MainState"
 
@@ -18,8 +18,10 @@ def enter():
     global boy
     boy = Boy()
     grass = Grass()
+    ui = UI_wings()
     game_world.add_object(grass, 0)
     game_world.add_object(boy, 1)
+    game_world.add_object(ui, 2)
 
 
 def exit():
