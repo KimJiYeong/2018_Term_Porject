@@ -9,19 +9,22 @@ import game_world
 from boy import Boy
 from grass import Grass
 from ui_layer import UI_wings
-
+from ui_gague import UI_gague
 name = "MainState"
 
 boy = None
-
+gauge = None
 def enter():
     global boy
+    global gauge
     boy = Boy()
     grass = Grass()
     ui = UI_wings()
+    gauge = UI_gague()
     game_world.add_object(grass, 0)
     game_world.add_object(boy, 1)
     game_world.add_object(ui, 2)
+    game_world.add_object(gauge, 3)
 
 
 def exit():

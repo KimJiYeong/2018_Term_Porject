@@ -2,8 +2,9 @@
 # layer 0: Background Objects
 # layer 1: Foreground Objects
 # layer 2: UI Objects
+# layer 3: UI_sub Objects
 
-objects = [[], [], []]
+objects = [[], [], [], []]
 
 
 def add_object(o, layer):
