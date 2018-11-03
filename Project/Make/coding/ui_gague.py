@@ -19,6 +19,7 @@ class UI_gague:
         self.volume = load_music('The_Lapsed_Times.mp3')
         self.volume.set_volume(40)
         self.volume.play(1)
+
         self.button_y = 100
 
     def update(self):
