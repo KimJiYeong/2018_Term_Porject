@@ -6,10 +6,11 @@ from pico2d import *
 import game_framework
 import game_world
 
-from boy import Boy
+from player import Boy
 from grass import Grass
 from ui_layer import UI_wings
 from ui_gague import UI_gague
+from ui_heart import  UI_heart
 name = "MainState"
 
 boy = None
@@ -21,10 +22,12 @@ def enter():
     grass = Grass()
     ui = UI_wings()
     gauge = UI_gague()
+    heart = UI_heart()
     game_world.add_object(grass, 0)
     game_world.add_object(boy, 1)
     game_world.add_object(ui, 2)
     game_world.add_object(gauge, 3)
+    game_world.add_object(heart, 3)
 
 
 def exit():
