@@ -16,6 +16,7 @@ class UI_gague:
         #size = 87 658
         self.image_gauge = load_image('Dream_gauge.png')
         self.image_button = load_image('Dream_Button.png')
+        self.volum = load_music('')
         self.button_y = 100
 
     def update(self):
