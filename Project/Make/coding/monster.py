@@ -17,169 +17,93 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # fill expressions correctly
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 0.8 / TIME_PER_ACTION
+EMERGE_PER_TIME = 0.4 / TIME_PER_ACTION
 #애니메이션 프레임수
-FRAMES_PER_ACTION = 6
+FRAMES_PER_ACTION = 8
 
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, UP_DOWN, DOWN_DOWN, UP_UP, DOWN_UP, LE_UP_DOWN , LE_UP_UP,SPACE = range(11)
-
-key_event_table = {
-    (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
-    (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
-    (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
-    (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
-    (SDL_KEYDOWN, SDLK_UP): UP_DOWN,
-    (SDL_KEYDOWN, SDLK_DOWN): DOWN_DOWN,
-    (SDL_KEYUP, SDLK_DOWN): DOWN_UP,
-    (SDL_KEYUP, SDLK_UP): UP_UP,
-    (SDL_KEYDOWN ,UP_DOWN, LEFT_DOWN) : LE_UP_DOWN,
-    (SDL_KEYUP ,SDLK_UP, SDLK_DOWN) : LE_UP_UP,
-    (SDL_KEYDOWN, SDLK_SPACE): SPACE
-
-}
+EMERGE , MOVE = range(2)
 
 current_time = 0
 save_time = 0
 
 # Boy States
-class IdleState:
+class emergeState:
     global current_time
     global save_time
 
     @staticmethod
-    def enter(boy, event):
-        if event == RIGHT_DOWN:
-            boy.velocity_x += RUN_SPEED_PPS
-        elif event == RIGHT_UP:
-            boy.velocity_x -= RUN_SPEED_PPS
-        elif event == LEFT_DOWN:
-            boy.velocity_x -= RUN_SPEED_PPS
-        elif event == LEFT_UP:
-            boy.velocity_x += RUN_SPEED_PPS
-        elif event == DOWN_DOWN:
-            boy.velocity_y -= RUN_SPEED_PPS
-        elif event == DOWN_UP:
-            boy.velocity_y += RUN_SPEED_PPS
-        elif event == UP_DOWN:
-            boy.velocity_y += RUN_SPEED_PPS
-        elif event == UP_UP:
-            boy.velocity_y -= RUN_SPEED_PPS
-        elif event == LE_UP_DOWN:
-            boy.velocity_y += RUN_SPEED_PPS
-            boy.velocity_x -= RUN_SPEED_PPS
-        elif event == LE_UP_UP:
-            boy.velocity_y -= RUN_SPEED_PPS
-            boy.velocity_x += RUN_SPEED_PPS
-
-        boy.timer = 0
+    def enter(monster, event):
+        monster.y = 900
+        monster.x = random.randint(400, 700)
+        monster.velocity_y = 1
+        monster.timer = 0
+        monster.frame_num = 1
 
     @staticmethod
-    def exit(boy, event):
-        if event == SPACE:
-            boy.fire_ball()
+    def exit(monster, event):
         pass
 
     @staticmethod
-    def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
-        boy.timer += 1
+    def do(monster):
+        monster.frame = (monster.frame + FRAMES_PER_ACTION * EMERGE_PER_TIME * game_framework.frame_time) % 8
+        monster.timer += 1
+        if monster.timer == 50:
+            #state 전환
+            monster.cur_state = moveState
 
-        if boy.timer % 100 == 0 :
-            boy.change_frame = True
-        else:
-            boy.change_frame = False
-
-        if boy.change_frame == True:
-            boy.frame_num = int((boy.frame_num + 1 ) % 3);
+        monster.y -= 2
 
     @staticmethod
-    def draw(boy):
-        if boy.dir == 1:
-            boy.image.clip_draw(int(boy.frame) * 124, 420 - boy.frame_num * 140, 124, 140, boy.x, boy.y)
+    def draw(monster):
+        if monster.dir == 1:
+            monster.image.clip_draw(int(monster.frame) * 150, 510 - 1 * 170, 150, 150, monster.x, monster.y)
         else:
-            boy.image.clip_draw(int(boy.frame) * 124, 420 - boy.frame_num * 140, 124, 140, boy.x, boy.y)
+            monster.image.clip_draw(int(monster.frame) * 150, 510 - 1 * 170, 150, 150, monster.x, monster.y)
 
 
-class RunState:
+class moveState:
 
     @staticmethod
-    def enter(boy, event):
-        # fill here
-        if event == RIGHT_DOWN:
-            boy.velocity_x += RUN_SPEED_PPS
-        elif event == LEFT_DOWN:
-            boy.velocity_x -= RUN_SPEED_PPS
-        elif event == RIGHT_UP:
-            boy.velocity_x -= RUN_SPEED_PPS
-        elif event == LEFT_UP:
-            boy.velocity_x += RUN_SPEED_PPS
-        elif event == DOWN_DOWN:
-            boy.velocity_y -= RUN_SPEED_PPS
-        elif event == DOWN_UP:
-            boy.velocity_y += RUN_SPEED_PPS
-        elif event == UP_DOWN:
-            boy.velocity_y += RUN_SPEED_PPS
-        elif event == UP_UP:
-            boy.velocity_y -= RUN_SPEED_PPS
-        elif event == LE_UP_DOWN:
-            boy.velocity_y += RUN_SPEED_PPS
-            boy.velocity_x -= RUN_SPEED_PPS
-        elif event == LE_UP_UP:
-            boy.velocity_y -= RUN_SPEED_PPS
-            boy.velocity_x += RUN_SPEED_PPS
-
-        boy.dir = clamp(-1, boy.velocity_x, 1)
-        boy.dir_y = clamp(-1, boy.velocity_y , 1)
+    def enter(monster, event):
+        monster.frame_num = 2
+        monster.timer = 0
         pass
 
     @staticmethod
-    def exit(boy, event):
-        if event == SPACE:
-            boy.fire_ball()
+    def do(monster):
+        monster.frame = (monster.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        monster.timer += 1
+        if monster.timer % 10 == 0:
+            monster.velocity_x = random.randint(1, 10)
 
-    @staticmethod
-    def do(boy):
-        if boy.dir == 1:
-            boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3 + 3
-        else :
-            boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
-
-        # fill here
-        boy.x += boy.velocity_x * game_framework.frame_time
-        boy.y += boy.velocity_y * game_framework.frame_time
-
-        boy.x = clamp(250, boy.x, 1200 - 250)
-        boy.y = clamp(100, boy.y, 1000 - 25)
-
-    @staticmethod
-    def draw(boy):
-        if boy.dir == 1:
-            boy.image.clip_draw(int(boy.frame) * 124, 420 - boy.frame_num * 140, 124, 140, boy.x, boy.y)
+        if monster.velocity_x % 2 == 0:
+            monster.x += 1
+            print("t")
         else:
-            boy.image.clip_draw(int(boy.frame) * 124, 420 - boy.frame_num * 140, 124, 140, boy.x, boy.y)
+            monster.x -= 1
+            print("r")
 
+        monster.x = clamp(300 , monster.x , 400)
+        pass
 
+    @staticmethod
+    def draw(monster):
+        monster.image.clip_draw(int(monster.frame) * 150, 510 - 2 * 170, 150, 150, monster.x, monster.y)
+        pass
 
 
 next_state_table = {
-    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
-                UP_UP: RunState, DOWN_DOWN: RunState, UP_DOWN: RunState, DOWN_UP: RunState,
-                LE_UP_DOWN : RunState , LE_UP_UP : RunState,
-                SPACE: IdleState },
-    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
-               UP_UP: IdleState, DOWN_DOWN: IdleState, UP_DOWN: IdleState, DOWN_UP: IdleState,
-                LE_UP_DOWN : IdleState , LE_UP_UP : IdleState,
-               SPACE: RunState },
 }
 
-class Boy:
+class Monster:
 
     def __init__(self):
         # 초기 시작 1200/ 2 // 100
-        self.x, self.y = 1200 // 2, 100
-        # Boy is only once created, so instance image loading is fine
+        self.x, self.y = 1200 // 2, 1000
+
         #이미지 수정
-        self.image = load_image('ch_move.png')
+        self.image = load_image('monster_A.png')
         # fill here
         self.font = load_font('ENCR10B.TTF' , 16) #폰트 업로드
 
@@ -192,12 +116,13 @@ class Boy:
 
         self.frame = 0
         self.event_que = []
-        self.cur_state = IdleState
+        #c초기 상태
+        self.cur_state = emergeState
         self.cur_state.enter(self, None)
 
         #프레임용
         self.change_frame = False
-        self.frame_num = 0
+        self.frame_num = 1
 
     def fire_ball(self):
         ball = Ball(self.x, self.y, self.dir_y*3)
@@ -216,11 +141,3 @@ class Boy:
 
     def draw(self):
         self.cur_state.draw(self)
-        # 폰트 렌더링
-        self.font.draw(self.x - 60 , self.y + 50 , '(Time : %3.2f)' % get_time(), (255, 255, 0))
-
-    def handle_event(self, event):
-        if (event.type, event.key) in key_event_table:
-            key_event = key_event_table[(event.type, event.key)]
-            self.add_event(key_event)
-
