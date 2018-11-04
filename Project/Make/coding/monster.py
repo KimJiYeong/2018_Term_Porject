@@ -23,10 +23,11 @@ EMERGE_PER_TIME = 0.4 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
 # Boy Event
-EMERGE , MOVE = range(2)
+EMERGE , MOVE, ATTACK, DIE = range(4)
 
 current_time = 0
 save_time = 0
+
 
 # Boy States
 class emergeState:
@@ -82,7 +83,7 @@ class moveState:
 
         if monster.timer % 10 == 0:
             monster.velocity_x = random.randint(1, 10)
-            monster.dir_y = random.randint(1, 10)
+            monster.dir_y = random.randint(1, 20)
             monster.hp -= 2
 
         if monster.dir_y == 1:
@@ -106,9 +107,10 @@ class moveState:
 class attackState:
 
     @staticmethod
-    def enter(monster, event):
+    def enter(monster):
         monster.frame_num = 2
         monster.timer = 0
+        print("------------------------------------")
         pass
 
     @staticmethod
@@ -134,6 +136,7 @@ class dieState:
     def enter(monster, event):
         monster.timer = 0
         monster.opacity = 1
+        print("1")
         pass
 
     @staticmethod
@@ -161,6 +164,14 @@ class dieState:
         monster.image.clip_draw(int(monster.frame) * 150, 510 - 4 * 170, 150, 150, monster.x, monster.y)
 
         pass
+
+next_state_table = {
+    emergeState : { EMERGE : emergeState , MOVE : emergeState , ATTACK : emergeState ,DIE : emergeState },
+    moveState: {EMERGE: moveState, MOVE: moveState, ATTACK: attackState, DIE: dieState},
+    attackState: {EMERGE: attackState, MOVE: moveState, ATTACK: attackState, DIE: dieState},
+    dieState: {EMERGE: emergeState, MOVE: moveState, ATTACK: attackState, DIE: dieState}
+
+}
 
 class Monster:
 
