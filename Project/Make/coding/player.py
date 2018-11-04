@@ -1,9 +1,11 @@
 import game_framework
 from pico2d import *
-from shoot import Ball
+from shoot import Shoot
+
 import math
-import game_world
 import random
+
+import game_world
 
 # Boy Run Speed
 # fill expressions correctly
@@ -64,12 +66,7 @@ class IdleState:
             boy.velocity_y += RUN_SPEED_PPS
         elif event == UP_UP:
             boy.velocity_y -= RUN_SPEED_PPS
-        elif event == LE_UP_DOWN:
-            boy.velocity_y += RUN_SPEED_PPS
-            boy.velocity_x -= RUN_SPEED_PPS
-        elif event == LE_UP_UP:
-            boy.velocity_y -= RUN_SPEED_PPS
-            boy.velocity_x += RUN_SPEED_PPS
+
 
         boy.timer = 0
 
@@ -121,21 +118,16 @@ class RunState:
             boy.velocity_y += RUN_SPEED_PPS
         elif event == UP_UP:
             boy.velocity_y -= RUN_SPEED_PPS
-        elif event == LE_UP_DOWN:
-            boy.velocity_y += RUN_SPEED_PPS
-            boy.velocity_x -= RUN_SPEED_PPS
-        elif event == LE_UP_UP:
-            boy.velocity_y -= RUN_SPEED_PPS
-            boy.velocity_x += RUN_SPEED_PPS
 
         boy.dir = clamp(-1, boy.velocity_x, 1)
-        boy.dir_y = clamp(-1, boy.velocity_y , 1)
+        boy.dir_y = clamp(-1, boy.velocity_y, 1)
         pass
 
     @staticmethod
     def exit(boy, event):
         if event == SPACE:
             boy.fire_ball()
+
 
     @staticmethod
     def do(boy):
@@ -171,9 +163,7 @@ next_state_table = {
                 LE_UP_DOWN : IdleState , LE_UP_UP : IdleState,
                SPACE: RunState },
 }
-ball = None
 class Boy:
-    global ball
 
     def __init__(self):
         # 초기 시작 1200/ 2 // 100
@@ -200,9 +190,13 @@ class Boy:
         self.change_frame = False
         self.frame_num = 0
 
+        self.time = 0
+        self.timer = 0
+
     def fire_ball(self):
-        ball = Ball(self.x, self.y, self.dir_y*3)
-        game_world.add_object(ball, 2)
+        print('Fire Shoot')
+        shoot_ball = Shoot(self.x, self.y, self.dir * 3)
+        game_world.add_object(shoot_ball, 2)
         pass
 
     def add_event(self, event):
@@ -225,4 +219,5 @@ class Boy:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
+
 

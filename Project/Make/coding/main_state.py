@@ -12,14 +12,15 @@ from grass import Grass
 from ui_layer import UI_wings
 from ui_gague import UI_gague
 from ui_heart import  UI_heart
-from shoot import Ball
+from shoot import Shoot
 name = "MainState"
 
 boy = None
 gauge = None
+ball = None
 def enter():
     global boy
-    global gauge
+    global gauge, ball
     boy = Boy()
     monster = Monster()
     grass = Grass()
@@ -29,13 +30,17 @@ def enter():
     game_world.add_object(grass, 0)
     game_world.add_object(boy, 1)
     game_world.add_object(monster, 1)
-    game_world.add_object(ui, 2)
-    game_world.add_object(gauge, 3)
-    game_world.add_object(heart, 3)
+    game_world.add_object(ui, 3)
+    game_world.add_object(gauge, 4)
+    game_world.add_object(heart, 4)
 
 
 def exit():
+    global boy, grass
+    del boy
+    del grass
     game_world.clear()
+
 
 def pause():
     pass
@@ -59,9 +64,6 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-    # fill here
-    delay(0.01)
-
 
 def draw():
     clear_canvas()

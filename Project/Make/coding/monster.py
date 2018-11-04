@@ -1,6 +1,6 @@
 import game_framework
 from pico2d import *
-from shoot import Ball
+from shoot import Shoot
 import math
 import game_world
 import random
@@ -39,7 +39,7 @@ class emergeState:
         monster.y = 900
         monster.x = random.randint(400, 700)
         monster.velocity_y = 1
-        monster.timer = 0
+        monster.time = 0
         monster.frame_num = 1
         monster.hp = 100
 
@@ -50,8 +50,8 @@ class emergeState:
     @staticmethod
     def do(monster):
         monster.frame = (monster.frame + FRAMES_PER_ACTION * EMERGE_PER_TIME * game_framework.frame_time) % 8
-        monster.timer += 1
-        if monster.timer == 50:
+        monster.time += 1
+        if monster.time == 50:
             #state 전환
             monster.cur_state = moveState
 
@@ -71,17 +71,18 @@ class moveState:
     def enter(monster, event):
         monster.frame_num = 2
         monster.timer = 0
+        monster.time = 1
         pass
 
     @staticmethod
     def do(monster):
         monster.frame = (monster.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        monster.timer += 1
+        monster.time += 1
         # hp가 0 이 되면 죽는다
         if monster.hp == 0:
             monster.cur_state = dieState
 
-        if monster.timer % 10 == 0:
+        if monster.time % 10 == 0:
             monster.velocity_x = random.randint(1, 10)
             monster.dir_y = random.randint(1, 20)
             monster.hp -= 2
@@ -109,14 +110,14 @@ class attackState:
     @staticmethod
     def enter(monster):
         monster.frame_num = 2
-        monster.timer = 0
+        monster.time = 0
         print("------------------------------------")
         pass
 
     @staticmethod
     def do(monster):
         monster.frame = (monster.frame + FRAMES_PER_ACTION * ATTACK_PER_TIME * game_framework.frame_time) % 8
-        monster.timer += 1
+        monster.time += 1
         # hp가 0 이 되면 죽는다
         if int(monster.frame) == 7:
             monster.cur_state = moveState
@@ -134,7 +135,7 @@ class dieState:
 
     @staticmethod
     def enter(monster, event):
-        monster.timer = 0
+        monster.time = 0
         monster.opacity = 1
         print("1")
         pass
@@ -147,8 +148,8 @@ class dieState:
 
     @staticmethod
     def do(monster):
-        monster.timer += 1
-        if monster.timer < 100:
+        monster.time += 1
+        if monster.time < 100:
             if monster.y < 1000:
                 monster.y += 2
             monster.opacity -= 0.1
@@ -166,7 +167,7 @@ class dieState:
         pass
 
 next_state_table = {
-    emergeState : { EMERGE : emergeState , MOVE : emergeState , ATTACK : emergeState ,DIE : emergeState },
+    emergeState : { EMERGE : emergeState , MOVE : moveState , ATTACK : emergeState ,DIE : emergeState },
     moveState: {EMERGE: moveState, MOVE: moveState, ATTACK: attackState, DIE: dieState},
     attackState: {EMERGE: attackState, MOVE: moveState, ATTACK: attackState, DIE: dieState},
     dieState: {EMERGE: emergeState, MOVE: moveState, ATTACK: attackState, DIE: dieState}
@@ -207,14 +208,13 @@ class Monster:
         #불투명도
         self.opacity = 0
 
-    def fire_ball(self):
-        ball = Ball(self.x, self.y, self.dir_y*3)
-        game_world.add_object(ball, 1)
+        self.time = 0
 
     def add_event(self, event):
         self.event_que.insert(0, event)
 
     def update(self):
+        print(self.time)
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
@@ -222,7 +222,8 @@ class Monster:
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
 
+
     def draw(self):
         self.cur_state.draw(self)
         self.font.draw(self.x - 60, self.y + 50, '(HP : %3.2f)' % self.hp, (255, 0, 0))
-        print(self.timer)
+

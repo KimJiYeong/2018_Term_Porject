@@ -5,18 +5,18 @@
 # layer 3: UI Objects
 # layer 4: UI_sub Objects
 
-objects = [[], [], [],[], []]
+objects = [[], [], [], [], []]
 
-
-def add_object(o, layer):
-    objects[layer].append(o)
 
 
 def remove_object(o):
+    print("delete")
     for i in range(len(objects)):
         if o in objects[i]:
             objects[i].remove(o)
             del o
+            return
+
 
 def clear():
     for o in all_objects():
@@ -29,3 +29,5 @@ def all_objects():
         for o in objects[i]:
             yield o
 
+def add_object(o, layer):
+    objects[layer].append(o)
