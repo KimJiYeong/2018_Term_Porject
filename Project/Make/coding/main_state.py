@@ -28,8 +28,8 @@ def enter():
     gauge = UI_gague()
     heart = UI_heart()
     game_world.add_object(grass, 0)
-    game_world.add_object(boy, 1)
-    game_world.add_object(monster, 1)
+    game_world.add_object(boy, 2)
+    game_world.add_object(monster, 2)
     game_world.add_object(ui, 3)
     game_world.add_object(gauge, 4)
     game_world.add_object(heart, 4)
@@ -64,6 +64,7 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+    delay(0.01)
 
 def draw():
     clear_canvas()

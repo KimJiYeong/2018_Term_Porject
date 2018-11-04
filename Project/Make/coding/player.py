@@ -195,8 +195,8 @@ class Boy:
 
     def fire_ball(self):
         print('Fire Shoot')
-        shoot_ball = Shoot(self.x, self.y, self.dir * 3)
-        game_world.add_object(shoot_ball, 2)
+        shoot_ball = Shoot(self.x, self.y, 1 * 3)
+        game_world.add_object(shoot_ball, 1)
         pass
 
     def add_event(self, event):

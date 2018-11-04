@@ -28,7 +28,6 @@ EMERGE , MOVE, ATTACK, DIE = range(4)
 current_time = 0
 save_time = 0
 
-
 # Boy States
 class emergeState:
     global current_time
@@ -135,7 +134,7 @@ class dieState:
 
     @staticmethod
     def enter(monster, event):
-        monster.time = 0
+        monster.time = 100
         monster.opacity = 1
         print("1")
         pass
@@ -148,14 +147,15 @@ class dieState:
 
     @staticmethod
     def do(monster):
-        monster.time += 1
-        if monster.time < 100:
-            if monster.y < 1000:
+        monster.time -= 1
+        if monster.time > 10:
+            if monster.y <= 1000:
                 monster.y += 2
-            monster.opacity -= 0.1
-        if monster.y > 1000:
-            monster.cur_state = emergeState
-            print("ta")
+                monster.opacity -= 0.1
+
+        if monster.y == 1000:
+            print("die")
+            game_world.remove_object(monster)
 
         pass
 
@@ -206,7 +206,7 @@ class Monster:
         self.hp = 100
 
         #불투명도
-        self.opacity = 0
+        self.opacity = 1
 
         self.time = 0
 
@@ -214,7 +214,6 @@ class Monster:
         self.event_que.insert(0, event)
 
     def update(self):
-        print(self.time)
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()

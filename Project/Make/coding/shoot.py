@@ -13,8 +13,8 @@ class Shoot:
         self.image.draw(self.x, self.y)
 
     def update(self):
-        self.x += self.velocity
+        self.y += self.velocity
 
-        if self.x < 25 or self.x > 700 - 25:
+        if self.y < 25 or self.y > 900 - 25:
             print('delete')
             game_world.remove_object(self)
