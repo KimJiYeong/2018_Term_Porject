@@ -17,6 +17,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # fill expressions correctly
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 0.8 / TIME_PER_ACTION
+ATTACK_PER_TIME = 0.5 / TIME_PER_ACTION
 EMERGE_PER_TIME = 0.4 / TIME_PER_ACTION
 #애니메이션 프레임수
 FRAMES_PER_ACTION = 8
@@ -82,6 +83,7 @@ class moveState:
         if monster.timer % 10 == 0:
             monster.velocity_x = random.randint(1, 10)
             monster.hp -= 2
+            monster.cur_state = attackState
 
         if monster.velocity_x % 2 == 0:
             monster.x += 2
@@ -98,32 +100,57 @@ class moveState:
         monster.image.clip_draw(int(monster.frame) * 150, 510 - 2 * 170, 150, 150, monster.x, monster.y)
         pass
 
+class attackState:
+
+    @staticmethod
+    def enter(monster, event):
+        monster.frame_num = 2
+        monster.timer = 0
+        pass
+
+    @staticmethod
+    def do(monster):
+        monster.frame = (monster.frame + FRAMES_PER_ACTION * ATTACK_PER_TIME * game_framework.frame_time) % 8
+        monster.timer += 1
+        # hp가 0 이 되면 죽는다
+        if int(monster.frame) == 7:
+            monster.cur_state = moveState
+
+        monster.x = clamp(250 , monster.x , 1200 - 250)
+        pass
+
+    @staticmethod
+    def draw(monster):
+        monster.image.clip_draw(int(monster.frame) * 150, 510 - 3 * 170, 150, 150, monster.x, monster.y)
+        pass
+
+
 class dieState:
 
     @staticmethod
     def enter(monster, event):
         monster.timer = 0
-        monster.opacity = 0
+        monster.opacity = 1
         pass
+
+    @staticmethod
+    def exit(monster , event):
+        monster.opacity = 1
+        monster.timer = 0
+        print("1")
 
     @staticmethod
     def do(monster):
-        monster.frame = (monster.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         monster.timer += 1
-        if monster.frame < 8:
+        if monster.timer < 100:
             if monster.y < 1000:
                 monster.y += 2
-            monster.opacity += 0.1
-        if monster.frame == 8:
-            monster.cur_state.exit
+            monster.opacity -= 0.1
+        if monster.y > 1000:
+            monster.cur_state = emergeState
             print("ta")
 
         pass
-
-    @staticmethod
-    def change_state(self, state):
-        
-
 
     @staticmethod
     def draw(monster):
@@ -131,10 +158,6 @@ class dieState:
         monster.image.clip_draw(int(monster.frame) * 150, 510 - 4 * 170, 150, 150, monster.x, monster.y)
 
         pass
-
-
-next_state_table = {
-}
 
 class Monster:
 
@@ -188,3 +211,4 @@ class Monster:
     def draw(self):
         self.cur_state.draw(self)
         self.font.draw(self.x - 60, self.y + 50, '(HP : %3.2f)' % self.hp, (255, 0, 0))
+        print(self.timer)
