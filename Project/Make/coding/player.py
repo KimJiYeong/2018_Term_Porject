@@ -1,6 +1,6 @@
 import game_framework
 from pico2d import *
-from ball import Ball
+from shoot import Ball
 import math
 import game_world
 import random
@@ -171,8 +171,9 @@ next_state_table = {
                 LE_UP_DOWN : IdleState , LE_UP_UP : IdleState,
                SPACE: RunState },
 }
-
+ball = None
 class Boy:
+    global ball
 
     def __init__(self):
         # 초기 시작 1200/ 2 // 100
@@ -201,7 +202,8 @@ class Boy:
 
     def fire_ball(self):
         ball = Ball(self.x, self.y, self.dir_y*3)
-        game_world.add_object(ball, 1)
+        game_world.add_object(ball, 2)
+        pass
 
     def add_event(self, event):
         self.event_que.insert(0, event)

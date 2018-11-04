@@ -1,10 +1,11 @@
 
 # layer 0: Background Objects
 # layer 1: Foreground Objects
-# layer 2: UI Objects
-# layer 3: UI_sub Objects
+# layer 2: Shooting star
+# layer 3: UI Objects
+# layer 4: UI_sub Objects
 
-objects = [[], [], [], []]
+objects = [[], [], [],[], []]
 
 
 def add_object(o, layer):
@@ -16,7 +17,6 @@ def remove_object(o):
         if o in objects[i]:
             objects[i].remove(o)
             del o
-
 
 def clear():
     for o in all_objects():

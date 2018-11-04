@@ -12,7 +12,7 @@ from grass import Grass
 from ui_layer import UI_wings
 from ui_gague import UI_gague
 from ui_heart import  UI_heart
-
+from shoot import Ball
 name = "MainState"
 
 boy = None
