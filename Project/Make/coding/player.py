@@ -96,8 +96,7 @@ class IdleState:
                 boy.frame_num = 3
             else:
                 boy.change_hit = False
-        else:
-            boy.frame_num = 0
+                boy.frame_num = 0
 
     @staticmethod
     def draw(boy):
