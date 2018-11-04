@@ -39,6 +39,7 @@ class emergeState:
         monster.velocity_y = 1
         monster.timer = 0
         monster.frame_num = 1
+        monster.hp = 100
 
     @staticmethod
     def exit(monster, event):
@@ -74,8 +75,13 @@ class moveState:
     def do(monster):
         monster.frame = (monster.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         monster.timer += 1
+        # hp가 0 이 되면 죽는다
+        if monster.hp == 0:
+            monster.cur_state = dieState
+
         if monster.timer % 10 == 0:
             monster.velocity_x = random.randint(1, 10)
+            monster.hp -= 2
 
         if monster.velocity_x % 2 == 0:
             monster.x += 2
@@ -90,6 +96,40 @@ class moveState:
     @staticmethod
     def draw(monster):
         monster.image.clip_draw(int(monster.frame) * 150, 510 - 2 * 170, 150, 150, monster.x, monster.y)
+        pass
+
+class dieState:
+
+    @staticmethod
+    def enter(monster, event):
+        monster.timer = 0
+        monster.opacity = 0
+        pass
+
+    @staticmethod
+    def do(monster):
+        monster.frame = (monster.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        monster.timer += 1
+        if monster.frame < 8:
+            if monster.y < 1000:
+                monster.y += 2
+            monster.opacity += 0.1
+        if monster.frame == 8:
+            monster.cur_state.exit
+            print("ta")
+
+        pass
+
+    @staticmethod
+    def change_state(self, state):
+        
+
+
+    @staticmethod
+    def draw(monster):
+        monster.image.opacify(monster.opacity)
+        monster.image.clip_draw(int(monster.frame) * 150, 510 - 4 * 170, 150, 150, monster.x, monster.y)
+
         pass
 
 
@@ -126,6 +166,9 @@ class Monster:
 
         #Life
         self.hp = 100
+
+        #불투명도
+        self.opacity = 0
 
     def fire_ball(self):
         ball = Ball(self.x, self.y, self.dir_y*3)
