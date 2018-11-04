@@ -1,11 +1,12 @@
 
 # layer 0: Background Objects
 # layer 1: Foreground Objects
-# layer 2: Shooting star
-# layer 3: UI Objects
-# layer 4: UI_sub Objects
+# layer 2: Shooting star : Player
+# layer 3: Shooting star : Monster
+# layer 4: UI Objects
+# layer 5: UI_sub Objects
 
-objects = [[], [], [], [], []]
+objects = [[], [], [], [], [], []]
 
 
 
@@ -17,6 +18,10 @@ def remove_object(o):
             del o
             return
 
+
+def check_object(layer):
+    for i in objects[layer]:
+        yield i
 
 def clear():
     for o in all_objects():
@@ -31,3 +36,15 @@ def all_objects():
 
 def add_object(o, layer):
     objects[layer].append(o)
+
+#충돌체크
+def collide(a,b):
+    left_a , bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    return True

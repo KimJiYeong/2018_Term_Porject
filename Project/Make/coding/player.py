@@ -69,6 +69,7 @@ class IdleState:
 
 
         boy.timer = 0
+        boy.frame = 0
 
     @staticmethod
     def exit(boy, event):
@@ -83,11 +84,20 @@ class IdleState:
 
         if boy.timer % 100 == 0 :
             boy.change_frame = True
+
         else:
             boy.change_frame = False
 
         if boy.change_frame == True:
             boy.frame_num = int((boy.frame_num + 1 ) % 3);
+
+        if boy.change_hit == True:
+            if int(boy.frame) < 5:
+                boy.frame_num = 3
+            else:
+                boy.change_hit = False
+        else:
+            boy.frame_num = 0
 
     @staticmethod
     def draw(boy):
@@ -189,7 +199,7 @@ class Boy:
         #프레임용
         self.change_frame = False
         self.frame_num = 0
-
+        self.change_hit = False
         self.time = 0
         self.timer = 0
 
@@ -198,7 +208,7 @@ class Boy:
     def fire_ball(self):
         print('Fire Shoot')
         shoot_ball = Shoot(self.x, self.y, 1 * 3)
-        game_world.add_object(shoot_ball, 1)
+        game_world.add_object(shoot_ball, 2)
         pass
 
     def add_event(self, event):
@@ -217,9 +227,15 @@ class Boy:
         # 폰트 렌더링
         self.font.draw(self.x - 60, self.y + 50, '(HP : %3.2f)' % self.hp, (255, 0, 0))
 
+        #충돌체크
+        draw_rectangle(*self.get_bb())
+
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
 
+    #충돌체크 용 함수
+    def get_bb(self):
+        return self.x - 30, self.y - 50 , self.x + 25 , self.y + 50
 

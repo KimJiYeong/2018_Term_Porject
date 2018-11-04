@@ -1,6 +1,6 @@
 import game_framework
 from pico2d import *
-from shoot import Shoot
+from monster_shoot import Shoot
 import math
 import game_world
 import random
@@ -84,7 +84,6 @@ class moveState:
         if monster.time % 10 == 0:
             monster.velocity_x = random.randint(1, 10)
             monster.dir_y = random.randint(1, 20)
-            monster.hp -= 2
 
         if monster.dir_y == 1:
             monster.cur_state = attackState
@@ -214,7 +213,7 @@ class Monster:
     def attack_player(self):
         print('Fire Shoot')
         attack_ball = Shoot(self.x, self.y, -1 * 3)
-        game_world.add_object(attack_ball, 1)
+        game_world.add_object(attack_ball, 3)
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -232,3 +231,6 @@ class Monster:
         self.cur_state.draw(self)
         self.font.draw(self.x - 60, self.y + 50, '(HP : %3.2f)' % self.hp, (255, 0, 0))
 
+    #충돌체크 용 함수
+    def get_bb(self):
+        return self.x - 30, self.y - 50 , self.x + 25 , self.y + 50

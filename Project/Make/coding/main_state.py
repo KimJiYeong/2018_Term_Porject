@@ -18,9 +18,12 @@ name = "MainState"
 boy = None
 gauge = None
 ball = None
+monster = None
+time = 0
+balls = None
 def enter():
     global boy
-    global gauge, ball
+    global gauge, ball, monster, balls
     boy = Boy()
     monster = Monster()
     grass = Grass()
@@ -28,12 +31,11 @@ def enter():
     gauge = UI_gague()
     heart = UI_heart()
     game_world.add_object(grass, 0)
-    game_world.add_object(boy, 2)
-    game_world.add_object(monster, 2)
-    game_world.add_object(ui, 3)
-    game_world.add_object(gauge, 4)
-    game_world.add_object(heart, 4)
-
+    game_world.add_object(boy, 1)
+    game_world.add_object(monster, 1)
+    game_world.add_object(ui, 4)
+    game_world.add_object(gauge, 5)
+    game_world.add_object(heart, 5)
 
 def exit():
     global boy, grass
@@ -62,15 +64,34 @@ def handle_events():
 
 
 def update():
+    global time, monster, balls, ball
     for game_object in game_world.all_objects():
         game_object.update()
     delay(0.01)
+    for game_object in game_world.check_object(3):
+        if game_world.collide(game_object ,boy) == True:
+            game_world.remove_object(game_object)
+            boy.hp -= 1
+            if boy.change_hit == False:
+                boy.change_hit = True
+
+    for game_object in game_world.check_object(2):
+        if game_world.collide(game_object, monster) == True:
+            game_world.remove_object(game_object)
+            monster.hp -= 1
+
+            pass
+
+
 
 def draw():
     clear_canvas()
     for game_object in game_world.all_objects():
         game_object.draw()
     update_canvas()
+
+
+
 
 
 
