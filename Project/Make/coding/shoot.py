@@ -15,6 +15,6 @@ class Shoot:
     def update(self):
         self.y += self.velocity
 
-        if self.y < 25 or self.y > 900 - 25:
+        if self.y < 25 or self.y > 1000 - 25:
             print('delete')
             game_world.remove_object(self)

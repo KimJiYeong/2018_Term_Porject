@@ -193,6 +193,8 @@ class Boy:
         self.time = 0
         self.timer = 0
 
+        self.hp = 100
+
     def fire_ball(self):
         print('Fire Shoot')
         shoot_ball = Shoot(self.x, self.y, 1 * 3)
@@ -213,7 +215,7 @@ class Boy:
     def draw(self):
         self.cur_state.draw(self)
         # 폰트 렌더링
-        self.font.draw(self.x - 60 , self.y + 50 , '(Time : %3.2f)' % get_time(), (255, 255, 0))
+        self.font.draw(self.x - 60, self.y + 50, '(HP : %3.2f)' % self.hp, (255, 0, 0))
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:

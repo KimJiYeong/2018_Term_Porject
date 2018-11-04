@@ -119,6 +119,7 @@ class attackState:
         monster.time += 1
         # hp가 0 이 되면 죽는다
         if int(monster.frame) == 7:
+            monster.attack_player()
             monster.cur_state = moveState
 
         monster.x = clamp(250 , monster.x , 1200 - 250)
@@ -140,7 +141,7 @@ class dieState:
         pass
 
     @staticmethod
-    def exit(monster , event):
+    def exit(monster, event):
         monster.opacity = 1
         monster.timer = 0
         print("1")
@@ -209,6 +210,11 @@ class Monster:
         self.opacity = 1
 
         self.time = 0
+
+    def attack_player(self):
+        print('Fire Shoot')
+        attack_ball = Shoot(self.x, self.y, -1 * 3)
+        game_world.add_object(attack_ball, 1)
 
     def add_event(self, event):
         self.event_que.insert(0, event)
