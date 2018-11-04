@@ -82,7 +82,10 @@ class moveState:
 
         if monster.timer % 10 == 0:
             monster.velocity_x = random.randint(1, 10)
+            monster.dir_y = random.randint(1, 10)
             monster.hp -= 2
+
+        if monster.dir_y == 1:
             monster.cur_state = attackState
 
         if monster.velocity_x % 2 == 0:
