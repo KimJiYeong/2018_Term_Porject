@@ -78,13 +78,13 @@ class moveState:
             monster.velocity_x = random.randint(1, 10)
 
         if monster.velocity_x % 2 == 0:
-            monster.x += 1
+            monster.x += 2
             print("t")
         else:
-            monster.x -= 1
+            monster.x -= 2
             print("r")
 
-        monster.x = clamp(300 , monster.x , 400)
+        monster.x = clamp(250 , monster.x , 1200 - 250)
         pass
 
     @staticmethod
@@ -124,6 +124,9 @@ class Monster:
         self.change_frame = False
         self.frame_num = 1
 
+        #Life
+        self.hp = 100
+
     def fire_ball(self):
         ball = Ball(self.x, self.y, self.dir_y*3)
         game_world.add_object(ball, 1)
@@ -141,3 +144,4 @@ class Monster:
 
     def draw(self):
         self.cur_state.draw(self)
+        self.font.draw(self.x - 60, self.y + 50, '(HP : %3.2f)' % self.hp, (255, 0, 0))
