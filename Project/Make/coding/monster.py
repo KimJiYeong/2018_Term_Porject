@@ -121,6 +121,10 @@ class attackState:
             monster.attack_player()
             monster.cur_state = moveState
 
+        # hp가 0 이 되면 죽는다
+        if monster.hp == 0:
+            monster.cur_state = dieState
+
         monster.x = clamp(250 , monster.x , 1200 - 250)
         pass
 
@@ -233,4 +237,4 @@ class Monster:
 
     #충돌체크 용 함수
     def get_bb(self):
-        return self.x - 30, self.y - 50 , self.x + 25 , self.y + 50
+        return self.x - 50, self.y - 50 , self.x + 50 , self.y + 50

@@ -4,6 +4,12 @@ class UI_wings:
     def __init__(self):
         self.image = load_image('UI.png')
 
+
+        self.volume = load_music('The_Lapsed_Times.mp3')
+        self.volume.set_volume(10)
+        self.volume.play(1)
+
+
     def update(self):
         pass
 

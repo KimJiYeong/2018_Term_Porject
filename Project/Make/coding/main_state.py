@@ -78,7 +78,8 @@ def update():
     for game_object in game_world.check_object(2):
         if game_world.collide(game_object, monster) == True:
             game_world.remove_object(game_object)
-            monster.hp -= 1
+            #시연 용 조정
+            monster.hp -= 10
 
             pass
 

@@ -204,6 +204,8 @@ class Boy:
 
         self.hp = 100
 
+
+
     def fire_ball(self):
         print('Fire Shoot')
         shoot_ball = Shoot(self.x, self.y, 1 * 3)
