@@ -13,6 +13,7 @@ from ui_layer import UI_wings
 from ui_gague import UI_gague
 from ui_heart import  UI_heart
 from shoot import Shoot
+from ui_Score import  UI_score
 name = "MainState"
 
 boy = None
@@ -21,19 +22,23 @@ ball = None
 monster = None
 time = 0
 balls = None
+score = None
+
 def enter():
     global boy
-    global gauge, ball, monster, balls
+    global gauge, ball, monster, balls, score
     boy = Boy()
     monster = Monster()
     grass = Grass()
     ui = UI_wings()
+    score = UI_score()
     gauge = UI_gague()
     heart = UI_heart()
     game_world.add_object(grass, 0)
     game_world.add_object(boy, 1)
     game_world.add_object(monster, 1)
     game_world.add_object(ui, 4)
+    game_world.add_object(score , 4)
     game_world.add_object(gauge, 5)
     game_world.add_object(heart, 5)
 
@@ -64,7 +69,7 @@ def handle_events():
 
 
 def update():
-    global time, monster, balls, ball
+    global time, monster, balls, ball, score
     for game_object in game_world.all_objects():
         game_object.update()
     delay(0.01)
@@ -80,7 +85,7 @@ def update():
             game_world.remove_object(game_object)
             #시연 용 조정
             monster.hp -= 10
-
+            score.score += 10
             pass
 
 
