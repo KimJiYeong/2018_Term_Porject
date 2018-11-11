@@ -2,7 +2,7 @@ from pico2d import *
 
 class UI_wings:
     def __init__(self):
-        self.image = load_image('UI.png')
+        self.image = load_image('resource\\UI.png')
 
 
         self.volume = load_music('The_Lapsed_Times.mp3')

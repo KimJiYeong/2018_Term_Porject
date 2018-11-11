@@ -14,8 +14,8 @@ FRAMES_PER_ACTION = 6
 class UI_gague:
     def __init__(self):
         #size = 87 658
-        self.image_gauge = load_image('Dream_gauge.png')
-        self.image_button = load_image('Dream_Button.png')
+        self.image_gauge = load_image('resource\\Dream_gauge.png')
+        self.image_button = load_image('resource\\Dream_Button.png')
 
 
         self.button_y = 100

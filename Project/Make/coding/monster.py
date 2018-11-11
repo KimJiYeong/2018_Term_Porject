@@ -185,7 +185,7 @@ class Monster:
         self.x, self.y = 1200 // 2, 1000
 
         #이미지 수정
-        self.image = load_image('monster_A.png')
+        self.image = load_image('resource\\monster_A.png')
         # fill here
         self.font = load_font('ENCR10B.TTF' , 16) #폰트 업로드
 

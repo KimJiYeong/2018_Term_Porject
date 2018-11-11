@@ -179,7 +179,7 @@ class Boy:
         self.x, self.y = 1200 // 2, 100
         # Boy is only once created, so instance image loading is fine
         #이미지 수정
-        self.image = load_image('ch_move.png')
+        self.image = load_image('resource\\ch_move.png')
         # fill here
         self.font = load_font('ENCR10B.TTF' , 16) #폰트 업로드
 
