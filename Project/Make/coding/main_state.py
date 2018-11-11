@@ -23,10 +23,10 @@ monster = None
 time = 0
 balls = None
 score = None
-
+heart = None
 def enter():
     global boy
-    global gauge, ball, monster, balls, score
+    global gauge, ball, monster, balls, score, heart
     boy = Boy()
     monster = Monster()
     grass = Grass()
@@ -69,7 +69,7 @@ def handle_events():
 
 
 def update():
-    global time, monster, balls, ball, score
+    global time, monster, balls, ball, score, heart
     for game_object in game_world.all_objects():
         game_object.update()
     delay(0.01)
@@ -77,6 +77,8 @@ def update():
         if game_world.collide(game_object ,boy) == True:
             game_world.remove_object(game_object)
             boy.hp -= 1
+            if(boy.hp % 10 == 0): #10 번 맞으면 하트가 한번 깍인다.
+                heart.attack_count -= 1
             if boy.change_hit == False:
                 boy.change_hit = True
 
@@ -86,6 +88,7 @@ def update():
             #시연 용 조정
             monster.hp -= 10
             score.score += 10
+
             pass
 
 

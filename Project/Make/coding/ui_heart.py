@@ -9,11 +9,14 @@ class UI_heart:
         self.image_heart2 = load_image('resource\\heart.png')
         self.image_heart3 = load_image('resource\\heart.png')
         self.button_y = 100
-
+        self.attack_count = 4
     def update(self):
         pass
 
     def draw(self):
-        self.image_heart1.draw(56 * 1 + 5, 1000 - 80)
-        self.image_heart2.draw(56 * 2 + 10, 1000 - 80)
-        self.image_heart3.draw(56 * 3 + 15, 1000 - 80)
+        if self.attack_count > 3:
+            self.image_heart1.draw(56 * 1 + 5, 1000 - 80)
+        if self.attack_count > 2:
+            self.image_heart2.draw(56 * 2 + 10, 1000 - 80)
+        if self.attack_count > 1:
+            self.image_heart3.draw(56 * 3 + 15, 1000 - 80)
