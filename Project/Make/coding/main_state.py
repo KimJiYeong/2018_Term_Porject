@@ -87,8 +87,11 @@ def update():
             game_world.remove_object(game_object)
             #시연 용 조정
             monster.hp -= 10
-            score.score += 10
-            #몬스터가 없어도 점수가 올라가는 버그 발생
+
+            if monster.hp > 0:
+                score.score += 10
+                #몬스터가 없어도 점수가 올라가는 버그 발생
+                # 해결함
             pass
 
 
