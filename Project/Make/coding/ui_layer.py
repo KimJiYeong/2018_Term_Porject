@@ -5,13 +5,9 @@ class UI_wings:
         self.image = load_image('resource\\UI.png')
 
 
-        self.volume = load_music('The_Lapsed_Times.mp3')
-        self.volume.set_volume(60
-                               )
-        self.volume.repeat_play()
-
 
     def update(self):
+
         pass
 
     def draw(self):

@@ -17,6 +17,9 @@ class UI_gague:
         self.image_gauge = load_image('resource\\Dream_gauge.png')
         self.image_button = load_image('resource\\Dream_Button.png')
 
+        self.volume = load_music('resource\\The_Lapsed_Times.mp3')
+        self.volume.set_volume(60)
+        self.volume.repeat_play()
 
         self.button_y = 100
 

@@ -17,6 +17,8 @@ start_bt_x , start_bt_y = 0, 0
 
 ms_x , ms_y = 0,0
 
+title_bgm = None
+
 def enter():
     global image
     global start_bt
@@ -24,12 +26,19 @@ def enter():
     global start_bt_x , start_bt_y
     global tutorial_bt_x , tutorial_bt_y
 
+    global title_bgm
+
     tutorial_bt_x, tutorial_bt_y = 1000 - 50, 300
     start_bt_x, start_bt_y = 1000 - 50, 550
 
     image = load_image('resource\\title2.png')
     start_bt = load_image('resource\\start_bt.png')
     tutorial_bt = load_image('resource\\tutorial_bt.png')
+
+    title_bgm = load_music('resource\\Septentrion.mp3')
+    title_bgm.set_volume(40)
+    title_bgm.repeat_play()
+
     pass
 
 
