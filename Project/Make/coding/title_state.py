@@ -9,7 +9,7 @@ image = None
 
 def enter():
     global image
-    image = load_image('title2.png')
+    image = load_image('resource\\title2.png')
     pass
 
 
@@ -33,7 +33,7 @@ def handle_events():
 
 def draw():
     clear_canvas()
-    image.draw(1200, 1000)
+    image.draw(1200 // 2, 1000 // 2)
     update_canvas()
     pass
 

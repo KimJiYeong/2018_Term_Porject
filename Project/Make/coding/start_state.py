@@ -4,12 +4,15 @@ from pico2d import *
 
 
 name = "StartState"
-image = []
+image = None
 logo_time = 0.0
 
 def enter():
     global image
-    image = load_image('kpu_credit.png')
+    image[0] = load_image('resource\\start_state_image\\num_0000.png')
+    image[1] = load_image('resource\\start_state_image\\num_0001.png')
+    image[2] = load_image('resource\\start_state_image\\num_0002.png')
+
     pass
 
 
@@ -34,7 +37,8 @@ def update():
 def draw():
     global image
     clear_canvas()
-    image.draw(400,300)
+    for i in 3:
+        image[i].draw(1200,1000)
     update_canvas()
 
     pass
