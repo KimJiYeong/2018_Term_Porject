@@ -204,12 +204,15 @@ class Boy:
 
         self.hp = 100
 
+        self.shoot_count = 0
+
 
 
     def fire_ball(self):
         print('Fire Shoot')
         shoot_ball = Shoot(self.x, self.y, 1 * 3)
         game_world.add_object(shoot_ball, 2)
+        self.shoot_count += 1
         pass
 
     def add_event(self, event):
