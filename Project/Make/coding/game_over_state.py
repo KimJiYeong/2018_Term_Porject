@@ -64,8 +64,7 @@ def handle_events():
         else:
             if(event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 game_framework.quit()
-            elif ((start_bt_x - 100) < ms_x) and (ms_x < (start_bt_x + 100)) and ((start_bt_y - 50) < ms_y) and (ms_y < (start_bt_y + 50)):
-                game_framework.change_state(main_state)
+
     pass
 
 def draw():

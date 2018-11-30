@@ -5,6 +5,7 @@ import os
 from pico2d import *
 import game_framework
 import game_world
+import game_over_state
 
 from player import Boy
 from monster import Monster
@@ -64,8 +65,11 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
+        elif ( boy.hp == 0):
+            game_framework.change_state(game_over_state)
         else:
             boy.handle_event(event)
+
 
 
 def update():
