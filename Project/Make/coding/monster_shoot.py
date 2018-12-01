@@ -13,7 +13,7 @@ class Shoot:
         self.image.draw(self.x, self.y)
 
         # 충돌체크
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
 
     def update(self):
         self.y += self.velocity

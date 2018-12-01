@@ -4,9 +4,9 @@ import game_framework
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1 / TIME_PER_ACTION
 #애니메이션 프레임수
-FRAMES_PER_ACTION = 10
+FRAMES_PER_ACTION = 20
 
-class Grass:
+class Background:
     def __init__(self):
         self.image = load_image('resource\\scroll_map_01.png')
         self.scroll_y = 1000

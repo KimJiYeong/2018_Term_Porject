@@ -3,6 +3,7 @@ import main_state
 from pico2d import *
 import game_world
 from ui_Score import UI_score
+import tutorial_state
 name = "TitleState"
 image = None
 
@@ -62,6 +63,7 @@ def exit():
 def handle_events():
     global tutorial_bt_ms_move_sel
     global start_bt_ms_move_sel
+    global tutorial_bt_x, tutorial_bt_y
     global ms_x, ms_y
 
     events = get_events()
@@ -77,6 +79,9 @@ def handle_events():
                 game_framework.quit()
             elif ((start_bt_x - 100) < ms_x) and (ms_x < (start_bt_x + 100)) and ((start_bt_y - 50) < ms_y) and (ms_y < (start_bt_y + 50)):
                 game_framework.change_state(main_state)
+            elif ((tutorial_bt_x - 100) < ms_x) and (ms_x < (tutorial_bt_x + 100)) and ((tutorial_bt_y - 50) < ms_y) and (
+                    ms_y < (tutorial_bt_y + 50)):
+                game_framework.change_state(tutorial_state)
     pass
 
 def draw():

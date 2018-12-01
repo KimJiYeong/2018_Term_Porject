@@ -1,7 +1,7 @@
 import game_framework
 from pico2d import *
 from shoot import Shoot
-
+from special_shoot import S_Shoot
 import math
 import random
 
@@ -23,7 +23,7 @@ ACTION_PER_TIME = 0.8 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 6
 
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, UP_DOWN, DOWN_DOWN, UP_UP, DOWN_UP, LE_UP_DOWN , LE_UP_UP,SPACE = range(11)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, UP_DOWN, DOWN_DOWN, UP_UP, DOWN_UP, LE_UP_DOWN , LE_UP_UP,SPACE , SPECIAL = range(12)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -36,8 +36,8 @@ key_event_table = {
     (SDL_KEYUP, SDLK_UP): UP_UP,
     (SDL_KEYDOWN ,UP_DOWN, LEFT_DOWN) : LE_UP_DOWN,
     (SDL_KEYUP ,SDLK_UP, SDLK_DOWN) : LE_UP_UP,
-    (SDL_KEYDOWN, SDLK_SPACE): SPACE
-
+    (SDL_KEYDOWN, SDLK_SPACE): SPACE,
+    (SDL_KEYDOWN, SDLK_z): SPECIAL
 }
 
 current_time = 0
@@ -75,6 +75,9 @@ class IdleState:
     def exit(boy, event):
         if event == SPACE:
             boy.fire_ball()
+        elif event == SPECIAL and boy.frame_num == 2:
+            boy.Special_Attack()
+            boy.frame_num = 0
         pass
 
     @staticmethod
@@ -89,7 +92,7 @@ class IdleState:
             boy.change_frame = False
 
         if boy.change_frame == True:
-            boy.frame_num = int((boy.frame_num + 1 ) % 3)
+            boy.frame_num = clamp(0 ,int((boy.frame_num + 1 )), 2)
 
         if boy.change_hit == True:
             if int(boy.frame) < 5:
@@ -97,6 +100,8 @@ class IdleState:
             else:
                 boy.change_hit = False
                 boy.frame_num = 0
+
+        boy.return_x()
 
     @staticmethod
     def draw(boy):
@@ -136,7 +141,9 @@ class RunState:
     def exit(boy, event):
         if event == SPACE:
             boy.fire_ball()
-
+        elif event == SPECIAL and boy.frame_num == 2:
+            boy.Special_Attack()
+            boy.frame_num = 0
 
     @staticmethod
     def do(boy):
@@ -159,18 +166,15 @@ class RunState:
         else:
             boy.image.clip_draw(int(boy.frame) * 124, 420 - boy.frame_num * 140, 124, 140, boy.x, boy.y)
 
-
-
-
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
                 UP_UP: RunState, DOWN_DOWN: RunState, UP_DOWN: RunState, DOWN_UP: RunState,
                 LE_UP_DOWN : RunState , LE_UP_UP : RunState,
-                SPACE: IdleState },
+                SPACE: IdleState , SPECIAL : IdleState },
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
                UP_UP: IdleState, DOWN_DOWN: IdleState, UP_DOWN: IdleState, DOWN_UP: IdleState,
                 LE_UP_DOWN : IdleState , LE_UP_UP : IdleState,
-               SPACE: RunState },
+               SPACE: RunState ,SPECIAL: RunState},
 }
 class Boy:
 
@@ -215,6 +219,13 @@ class Boy:
         self.shoot_count += 1
         pass
 
+    def Special_Attack(self):
+        print('Special Shoot')
+        shoot_ball_2 = S_Shoot(self.x, self.y, 1 * 3)
+        game_world.add_object(shoot_ball_2, 4)
+        self.shoot_count += 5
+        pass
+
     def add_event(self, event):
         self.event_que.insert(0, event)
 
@@ -226,13 +237,16 @@ class Boy:
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
 
+        self.return_x()
+        print(self.return_x())
+
     def draw(self):
         self.cur_state.draw(self)
         # 폰트 렌더링
         self.font.draw(self.x - 60, self.y + 50, '(HP : %3.2f)' % self.hp, (255, 0, 0))
 
         #충돌체크
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
@@ -241,5 +255,8 @@ class Boy:
 
     #충돌체크 용 함수
     def get_bb(self):
-        return self.x - 30, self.y - 50 , self.x + 25 , self.y + 50
+        return self.x - 34, self.y - 50 , self.x + 34, self.y + 50
+
+    def return_x(self):
+        return self.x
 

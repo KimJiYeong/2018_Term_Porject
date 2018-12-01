@@ -3,10 +3,12 @@
 # layer 1: Foreground Objects
 # layer 2: Shooting star : Player
 # layer 3: Shooting star : Monster
-# layer 4: UI Objects
-# layer 5: UI_sub Objects
+# layer 4: special
+# layer 5:  monster
+# layer 6 :UI Objects
+# layer 7 :UI_sub Objects
 
-objects = [[], [], [], [], [], []]
+objects = [[], [], [], [], [], [] , [], []]
 
 
 
@@ -23,16 +25,19 @@ def check_object(layer):
     for i in objects[layer]:
         yield i
 
-def clear():
-    for o in all_objects():
-        o.clear()
-    objects.clear()
 
 
 def all_objects():
     for i in range(len(objects)):
         for o in objects[i]:
             yield o
+
+def clear():
+    global objects
+    for o in all_objects():
+        del o
+    objects.clear()
+    objects = [[], [], [], [], [], [] , [], []]
 
 
 def add_object(o, layer):
