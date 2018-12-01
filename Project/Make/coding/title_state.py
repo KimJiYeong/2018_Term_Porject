@@ -6,8 +6,8 @@ from pico2d import *
 name = "TitleState"
 image = None
 
-start_bt = None
-tutorial_bt = None
+exit_bt = None
+restart_bt = None
 
 tutorial_bt_ms_move_sel = 0
 start_bt_ms_move_sel = 0
@@ -73,13 +73,13 @@ def draw():
     global start_bt_ms_move_sel
     global start_bt_x , start_bt_y
     global tutorial_bt_x , tutorial_bt_y
-
+    global start_bt, tutorial_bt
     clear_canvas()
 
     image.draw(1200 // 2, 1000 // 2)
 
-    start_bt.clip_draw(0,60 * start_bt_ms_move_sel ,250,60 , start_bt_x, start_bt_y,250,60)
-    tutorial_bt.clip_draw(0,60 * tutorial_bt_ms_move_sel ,250,60 , tutorial_bt_x , tutorial_bt_y ,250,60)
+    start_bt.clip_draw(0, 60 * start_bt_ms_move_sel, 250, 60, start_bt_x, start_bt_y, 250, 60)
+    tutorial_bt.clip_draw(0, 60 * tutorial_bt_ms_move_sel, 250, 60, tutorial_bt_x, tutorial_bt_y, 250, 60)
 
     update_canvas()
     pass

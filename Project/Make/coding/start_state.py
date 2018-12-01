@@ -5,13 +5,13 @@ from pico2d import *
 
 name = "StartState"
 #image = [[], [], []]
-image = [None,None,None,
-         None,None,None,
-         None,None,None,
-         None,None,None,
-         None,None,None,
-         None,None,None,
-         None,None]
+image = [None, None, None,
+            None, None, None,
+            None, None, None,
+            None, None, None,
+            None, None, None,
+            None, None, None,
+            None, None]
 logo_time = 0.0
 
 frame = 0
