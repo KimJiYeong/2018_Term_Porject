@@ -25,7 +25,7 @@ def check_object(layer):
 
 def clear():
     for o in all_objects():
-        del o
+        o.clear()
     objects.clear()
 
 
@@ -33,6 +33,7 @@ def all_objects():
     for i in range(len(objects)):
         for o in objects[i]:
             yield o
+
 
 def add_object(o, layer):
     objects[layer].append(o)

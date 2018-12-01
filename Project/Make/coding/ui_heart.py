@@ -12,7 +12,6 @@ class UI_heart:
         self.attack_count = 4
     def update(self):
         pass
-
     def draw(self):
         if self.attack_count > 3:
             self.image_heart1.draw(56 * 1 + 5, 1000 - 80)

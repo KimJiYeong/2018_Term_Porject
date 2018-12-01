@@ -7,9 +7,9 @@ RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 TIME_PER_ACTION = 0.5
-ACTION_PER_TIME = 0.8 / TIME_PER_ACTION
+ACTION_PER_TIME = 1 / TIME_PER_ACTION
 #애니메이션 프레임수
-FRAMES_PER_ACTION = 6
+FRAMES_PER_ACTION = 5
 
 class UI_gague:
     def __init__(self):
@@ -31,3 +31,6 @@ class UI_gague:
     def draw(self):
         self.image_gauge.draw(87 + 950, 1000 - 658 + 100)
         self.image_button.draw(87 + 950, self.button_y)
+
+    def exit(self):
+        del self.volume

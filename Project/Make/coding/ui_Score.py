@@ -16,4 +16,7 @@ class UI_score:
 
     def draw(self):
         self.font.draw(self.pos_x , self.pos_y ,'%d' %self.score , (93,91,160))
+        print(self.score)
         pass
+    def return_score(self):
+        return self.score

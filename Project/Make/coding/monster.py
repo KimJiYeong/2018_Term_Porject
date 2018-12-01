@@ -90,10 +90,10 @@ class moveState:
 
         if monster.velocity_x % 2 == 0:
             monster.x += 2
-            print("t")
+
         else:
             monster.x -= 2
-            print("r")
+
 
         monster.x = clamp(250 , monster.x , 1200 - 250)
         pass
@@ -109,7 +109,7 @@ class attackState:
     def enter(monster):
         monster.frame_num = 2
         monster.time = 0
-        print("------------------------------------")
+
         pass
 
     @staticmethod
@@ -140,14 +140,12 @@ class dieState:
     def enter(monster, event):
         monster.time = 100
         monster.opacity = 1
-        print("1")
-        pass
 
     @staticmethod
     def exit(monster, event):
         monster.opacity = 1
         monster.timer = 0
-        print("1")
+
 
     @staticmethod
     def do(monster):

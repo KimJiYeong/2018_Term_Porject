@@ -1,8 +1,8 @@
 import game_framework
 import main_state
 from pico2d import *
-
-
+import game_world
+from ui_Score import UI_score
 name = "TitleState"
 image = None
 
@@ -18,6 +18,7 @@ start_bt_x , start_bt_y = 0, 0
 ms_x , ms_y = 0,0
 
 title_bgm = None
+score = None
 
 def enter():
     global image
@@ -27,6 +28,8 @@ def enter():
     global tutorial_bt_x , tutorial_bt_y
 
     global title_bgm
+
+    global score
 
     tutorial_bt_x, tutorial_bt_y = 1000 - 50, 300
     start_bt_x, start_bt_y = 1000 - 50, 550
@@ -39,12 +42,20 @@ def enter():
     title_bgm.set_volume(40)
     title_bgm.repeat_play()
 
+    score = UI_score()
     pass
 
 
 def exit():
     global image
+    global ms_x, mx_y
+    global score
+
     del(image)
+    ms_x = 0
+    ms_y = 0
+
+    score = 0
     pass
 
 

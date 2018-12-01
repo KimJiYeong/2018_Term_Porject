@@ -1,6 +1,7 @@
 import random
 import json
 import os
+import json
 
 from pico2d import *
 import game_framework
@@ -25,9 +26,13 @@ time = 0
 balls = None
 score = None
 heart = None
+
+#점수 저장 파일 입출력
+returnScore = []
+
 def enter():
     global boy
-    global gauge, ball, monster, balls, score, heart
+    global gauge, ball, monster, balls, score, heart, grass
     boy = Boy()
     monster = Monster()
     grass = Grass()
@@ -44,10 +49,29 @@ def enter():
     game_world.add_object(heart, 5)
 
 def exit():
-    global boy, grass
-    del boy
-    del grass
-    game_world.clear()
+    global boy
+    global gauge, ball, monster, balls,  heart, grass, score
+    global returnScore
+
+    with open('score_save_Dict\\current_score.json', 'w') as f:
+        json.dump(score.score, f)
+
+    #점수 저장을 위해 먼저 점수를 불러오기
+    with open('score_save_Dict\\score.json', 'r') as f:
+        returnScore = json.load(f)
+
+    returnScore.append(score.score)
+    #점수 병합 후 합치기0
+    with open('score_save_Dict\\score.json', 'w') as f:
+        json.dump(returnScore, f)
+
+    game_world.remove_object(heart)
+    game_world.remove_object(boy)
+    game_world.remove_object(gauge)
+    game_world.remove_object(balls)
+    game_world.remove_object(ball)
+    game_world.remove_object(monster)
+    game_world.remove_object(grass)
 
 
 def pause():
@@ -59,21 +83,20 @@ def resume():
 
 
 def handle_events():
+    global heart, gauge
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
-        elif ( boy.hp == 0):
-            game_framework.change_state(game_over_state)
         else:
             boy.handle_event(event)
 
 
 
 def update():
-    global time, monster, balls, ball, score, heart
+    global time, monster, balls, ball, score, heart, gauge
     for game_object in game_world.all_objects():
         game_object.update()
     delay(0.01)
@@ -81,8 +104,9 @@ def update():
         if game_world.collide(game_object ,boy) == True:
             game_world.remove_object(game_object)
             boy.hp -= 1
-            if(boy.hp % 10 == 0): #10 번 맞으면 하트가 한번 깍인다.
-                heart.attack_count -= 1
+            if(boy.hp % 5 == 0): #5 번 맞으면 하트가 한번 깍인다.
+                heart.attack_count = clamp(0 , heart.attack_count - 1 , 4)
+
             if boy.change_hit == False:
                 boy.change_hit = True
 
@@ -94,9 +118,9 @@ def update():
 
             if monster.hp > 0:
                 score.score += 10
-                #몬스터가 없어도 점수가 올라가는 버그 발생
-                # 해결함
             pass
+    if heart.attack_count == 1 or gauge.button_y > 657:
+        game_framework.change_state(game_over_state)
 
 
 

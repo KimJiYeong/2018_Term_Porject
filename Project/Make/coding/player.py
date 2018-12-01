@@ -89,7 +89,7 @@ class IdleState:
             boy.change_frame = False
 
         if boy.change_frame == True:
-            boy.frame_num = int((boy.frame_num + 1 ) % 3);
+            boy.frame_num = int((boy.frame_num + 1 ) % 3)
 
         if boy.change_hit == True:
             if int(boy.frame) < 5:
