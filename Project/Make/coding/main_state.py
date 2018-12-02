@@ -36,10 +36,11 @@ monster2 = []
 temp_time = 0
 
 global return_x
+regen_time =0
 
 def enter():
     global boy
-    global gauge, ball, monster, balls, score, heart, grass, temp_time
+    global gauge, ball, monster, balls, score, heart, grass, temp_time, regen_time
     boy = Boy()
     monster = Monster()
     grass = Background()
@@ -55,6 +56,8 @@ def enter():
     game_world.add_object(score , 7)
     game_world.add_object(gauge, 7)
     game_world.add_object(heart, 7)
+
+    regen_time = 0
 
 def exit():
     global boy
@@ -73,6 +76,7 @@ def exit():
     with open('score_save_Dict\\score.json', 'w') as f:
         json.dump(returnScore, f)
 
+    game_over_state.game_over_or_clear = gauge.button_y
     game_world.clear()
 
 def pause():
@@ -104,20 +108,24 @@ def update():
     for game_object in game_world.check_object(3):
         if game_world.collide(game_object ,boy) == True:
             game_world.remove_object(game_object)
-            boy.hp -= 5
+            boy.hp -= 1
+            boy.volume2.play()
             if(boy.hp % 5 == 0): #5 번 맞으면 하트가 한번 깍인다.
                 heart.attack_count = clamp(0 , heart.attack_count - 1 , 4)
 
             if boy.change_hit == False:
+                boy.frame = 0
                 boy.change_hit = True
     for game_object in game_world.check_object(5):
         if game_world.collide(game_object, boy) == True:
             game_world.remove_object(game_object)
-            boy.hp -= 5
+            boy.hp -= 1
+            boy.volume2.play()
             if (boy.hp % 5 == 0):  # 5 번 맞으면 하트가 한번 깍인다.
                 heart.attack_count = clamp(0, heart.attack_count - 1, 4)
 
             if boy.change_hit == False:
+                boy.frame = 0
                 boy.change_hit = True
 
 
@@ -128,6 +136,7 @@ def update():
                 #시연 용 조정
                 game_object2.hp -= 5
                 gauge.button_y += 1
+                boy.volume.play()
                 if game_object2.hp > 0:
                     score.score += 10
 
@@ -137,21 +146,23 @@ def update():
             if game_world.collide(game_object2, game_object) == True:
                 game_world.remove_object(game_object)
                 # 시연 용 조정
-                game_object2.hp -= 5
-                gauge.button_y += 1
-
+                game_object2.hp -= 50
+                gauge.button_y += 1.5
+                boy.volume.play()
                 if game_object2.hp > 0:
-                    score.score += 30
+                    score.score += 15
                 pass
     if heart.attack_count == 1 or gauge.button_y > 657:
         game_framework.change_state(game_over_state)
 
-    if temp_time % 1000 == 0:
+    global regen_time
+    regen_time = clamp(0, regen_time + 1 , 400)
+    if temp_time % (1000 - regen_time) == 0:
         tmp = Monster()
         game_world.add_object(tmp, 5)
         tmp = None
 
-    if temp_time % 800 == 0:
+    if temp_time % (1200 - regen_time) == 0:
         tmp = Monster2()
         game_world.add_object(tmp, 5)
         tmp = None

@@ -68,14 +68,13 @@ class IdleState:
             boy.velocity_y -= RUN_SPEED_PPS
 
 
-        boy.timer = 0
         boy.frame = 0
 
     @staticmethod
     def exit(boy, event):
-        if event == SPACE:
+        if event == SPACE and boy.change_hit == False:
             boy.fire_ball()
-        elif event == SPECIAL and boy.frame_num == 2:
+        elif event == SPECIAL and boy.frame_num == 2 and boy.change_hit == False:
             boy.Special_Attack()
             boy.frame_num = 0
         pass
@@ -85,21 +84,23 @@ class IdleState:
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
         boy.timer += 1
 
-        if boy.timer % 100 == 0 :
+        if boy.timer % (100) == 0 :
             boy.change_frame = True
 
         else:
             boy.change_frame = False
 
         if boy.change_frame == True:
-            boy.frame_num = clamp(0 ,int((boy.frame_num + 1 )), 2)
+            boy.frame_num = clamp(0 ,int(boy.frame_num + 1), 2)
+            boy.timer = 0
 
         if boy.change_hit == True:
             if int(boy.frame) < 5:
                 boy.frame_num = 3
             else:
-                boy.change_hit = False
                 boy.frame_num = 0
+                boy.timer = 0
+                boy.change_hit = False
 
         boy.return_x()
 
@@ -115,7 +116,6 @@ class RunState:
 
     @staticmethod
     def enter(boy, event):
-        # fill here
         if event == RIGHT_DOWN:
             boy.velocity_x += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
@@ -139,9 +139,9 @@ class RunState:
 
     @staticmethod
     def exit(boy, event):
-        if event == SPACE:
+        if event == SPACE and boy.change_hit == False:
             boy.fire_ball()
-        elif event == SPECIAL and boy.frame_num == 2:
+        elif event == SPECIAL and boy.frame_num == 2 and boy.change_hit == False:
             boy.Special_Attack()
             boy.frame_num = 0
 
@@ -151,6 +151,29 @@ class RunState:
             boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3 + 3
         else :
             boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
+
+        boy.timer += 1
+
+
+        if boy.timer % 100 == 0 :
+            boy.change_frame = True
+
+        else:
+            boy.change_frame = False
+
+        if boy.change_frame == True:
+            boy.frame_num = clamp(0 ,int((boy.frame_num)), 2)
+            boy.timer = 0
+
+        if boy.change_hit == True:
+            boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
+            if int(boy.frame) < 5:
+                boy.frame_num = 3
+                boy.hit_count += (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
+            else:
+                boy.frame_num = 0
+                boy.timer = 0
+                boy.change_hit = False
 
         # fill here
         boy.x += boy.velocity_x * game_framework.frame_time
@@ -183,7 +206,7 @@ class Boy:
         self.x, self.y = 1200 // 2, 100
         # Boy is only once created, so instance image loading is fine
         #이미지 수정
-        self.image = load_image('resource\\ch_move.png')
+        self.image = load_image('resource\\player\\ch_move.png')
         # fill here
         self.font = load_font('ENCR10B.TTF' , 16) #폰트 업로드
 
@@ -209,18 +232,21 @@ class Boy:
         self.hp = 100
 
         self.shoot_count = 0
+        self.hit_count = 0
 
+        self.volume = load_wav('resource\\mp3\\Attack hit.wav')
+        self.volume.set_volume(40)
 
+        self.volume2 = load_wav('resource\\mp3\\Paper turn sound effect.wav')
+        self.volume2.set_volume(100)
 
     def fire_ball(self):
-        print('Fire Shoot')
         shoot_ball = Shoot(self.x, self.y, 1 * 3)
         game_world.add_object(shoot_ball, 2)
         self.shoot_count += 1
         pass
 
     def Special_Attack(self):
-        print('Special Shoot')
         shoot_ball_2 = S_Shoot(self.x, self.y, 1 * 3)
         game_world.add_object(shoot_ball_2, 4)
         self.shoot_count += 5
@@ -236,9 +262,8 @@ class Boy:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
-
+        #실시간으로 x의 값을 리턴한다.
         self.return_x()
-        print(self.return_x())
 
     def draw(self):
         self.cur_state.draw(self)

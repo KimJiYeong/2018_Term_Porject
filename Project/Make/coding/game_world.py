@@ -13,7 +13,6 @@ objects = [[], [], [], [], [], [] , [], []]
 
 
 def remove_object(o):
-    print("delete")
     for i in range(len(objects)):
         if o in objects[i]:
             objects[i].remove(o)

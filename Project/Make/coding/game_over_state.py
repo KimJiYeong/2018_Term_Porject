@@ -23,6 +23,10 @@ title_bgm = None
 draw_time = 0
 print_final_score =0
 
+#game over 인지 판단하는 함수
+game_over_or_clear = 0
+font_color = [0, 0, 0]
+
 def enter():
     global image
     global note_image
@@ -34,23 +38,23 @@ def enter():
     global title_bgm
     global draw_time
     global font , best_score
-    image = load_image('resource\\result_bg.png')
-    note_image = load_image('resource\\result_note.png')
+    image = load_image('resource\\ui\\result_bg.png')
+    note_image = load_image('resource\\ui\\result_note.png')
 
-    exit_bt = load_image('resource\\exit_bt.png')
-    restart_bt = load_image('resource\\restart_bt.png')
+    exit_bt = load_image('resource\\ui\\exit_bt.png')
+    restart_bt = load_image('resource\\ui\\restart_bt.png')
 
     restart_bt_x, restart_bt_y = 500, 150
     exit_bt_x, exit_bt_y = 800, 150
 
-    title_bgm = load_music('resource\\Septentrion.mp3')
+    title_bgm = load_music('resource\\mp3\\Septentrion.mp3')
     title_bgm.set_volume(40)
     title_bgm.repeat_play()
 
     draw_time = 0
 
     font = load_font('ENCR10B.TTF', 100)  # 폰트 업로드
-    best_score = load_font('ENCR10B.TTF', 70)
+    best_score = load_font('ENCR10B.TTF', 50)
     with open('score_save_Dict\\current_score.json', 'r') as f:
         print_final_score = json.load(f)
 
@@ -92,7 +96,6 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_MOUSEMOTION:
             ms_x , ms_y = event.x , 1000 - 1 - event.y
-            print(ms_x , ms_y)
             update()
         else:
             if(event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
@@ -116,6 +119,8 @@ def draw():
     global restart_bt_x , restart_bt_y
     global font , best_score
     global print_final_score , score
+    global game_over_or_clear
+    global font_color
     clear_canvas()
 
     image.draw(1200 // 2, 1000 // 2)
@@ -124,8 +129,12 @@ def draw():
     if draw_time > 1200 // 2:
         exit_bt.clip_draw(0, 60 * exit_bt_ms_move_sel, 109, 118//2, exit_bt_x, exit_bt_y, 109, 118//2)
         restart_bt.clip_draw(0, 60 * restart_bt_ms_move_sel, 168, 114//2, restart_bt_x, restart_bt_y, 168, 114//2)
-        font.draw(1200 // 2, 600, '%d' %print_final_score, (93,91,160))
-        best_score.draw(300, 500, 'BEST SCORE %d' %score[0], (93,91,160))
+        if game_over_or_clear > 650:
+            best_score.draw(1200 // 2 - 100, 690, 'GAME CLEAR', (font_color[0], font_color[1], font_color[2]))
+            font.draw(1200 // 2, 500, '%d' %print_final_score, (200,51,51))
+            best_score.draw(450, 600, 'BEST SCORE %d' %score[0], (93,91,160))
+        else:
+            font.draw(1200 // 2 - 200, 550, 'GAME OVER', (0, 0, 0))
 
     update_canvas()
     pass
@@ -137,7 +146,7 @@ def update():
     global draw_time
     global exit_bt_x , exit_bt_y
     global restart_bt_x , restart_bt_y
-
+    global font_color
 
     draw_time = clamp(0,draw_time, 1200 // 2)
     draw_time += 1
@@ -151,6 +160,10 @@ def update():
         exit_bt_ms_move_sel = 0
     else:
         exit_bt_ms_move_sel = 1
+
+    font_color[0] += 1
+    font_color[1] += 5
+    font_color[2] += 6
 
     pass
 

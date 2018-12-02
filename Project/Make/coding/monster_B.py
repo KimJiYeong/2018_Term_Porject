@@ -159,7 +159,6 @@ class dieState:
                 monster.opacity -= 0.1
 
         if monster.y == 0:
-            print("die===============================")
             game_world.remove_object(monster)
 
         pass
@@ -187,7 +186,7 @@ class Monster2:
         self.x, self.y = random.randint(300, 800), 1000
 
         #이미지 수정
-        self.image = load_image('resource\\monster_B.png')
+        self.image = load_image('resource\\monster\\monster_B.png')
         # fill here
         self.font = load_font('ENCR10B.TTF' , 16) #폰트 업로드
         self.rand_y = random.randint(50 , 100)
@@ -220,7 +219,6 @@ class Monster2:
         self.arrive_y = 0
 
     def attack_player(self):
-        print('Fire Shoot')
         attack_ball = Shoot(self.x, self.y, -1 * 3)
         game_world.add_object(attack_ball, 3)
 

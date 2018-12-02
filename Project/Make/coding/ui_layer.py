@@ -2,7 +2,7 @@ from pico2d import *
 
 class UI_wings:
     def __init__(self):
-        self.image = load_image('resource\\UI.png')
+        self.image = load_image('resource\\ui\\UI.png')
 
 
 

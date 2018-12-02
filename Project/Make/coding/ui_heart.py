@@ -5,9 +5,9 @@ FRAMES_PER_ACTION = 6
 class UI_heart:
     def __init__(self):
         #size = 56 55
-        self.image_heart1 = load_image('resource\\heart.png')
-        self.image_heart2 = load_image('resource\\heart.png')
-        self.image_heart3 = load_image('resource\\heart.png')
+        self.image_heart1 = load_image('resource\\ui\\heart.png')
+        self.image_heart2 = load_image('resource\\ui\\heart.png')
+        self.image_heart3 = load_image('resource\\ui\\heart.png')
         self.button_y = 100
         self.attack_count = 4
     def update(self):

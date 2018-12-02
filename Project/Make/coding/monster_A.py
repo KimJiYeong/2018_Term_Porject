@@ -156,7 +156,6 @@ class dieState:
                 monster.opacity -= 0.1
 
         if monster.y == 1000:
-            print("die")
             game_world.remove_object(monster)
 
         pass
@@ -184,7 +183,7 @@ class Monster:
         self.x, self.y = random.randint(300, 800), 1000
 
         #이미지 수정
-        self.image = load_image('resource\\monster_A.png')
+        self.image = load_image('resource\\monster\\monster_A.png')
         # fill here
         self.font = load_font('ENCR10B.TTF' , 16) #폰트 업로드
         self.rand_y = random.randint(50 , 100)
@@ -215,7 +214,6 @@ class Monster:
 
     def attack_player(self):
         global boy
-        print('Fire Shoot')
         attack_ball = Shoot(self.x, self.y, -1 * 3)
         game_world.add_object(attack_ball, 3)
 
@@ -235,8 +233,6 @@ class Monster:
         global boy
         self.cur_state.draw(self)
         self.font.draw(self.x - 60, self.y + 50, '(HP : %3.2f)' % self.hp, (10, 0, 100))
-        # 충돌체크
-        #draw_rectangle(*self.get_bb())
 
     #충돌체크 용 함수
     def get_bb(self):

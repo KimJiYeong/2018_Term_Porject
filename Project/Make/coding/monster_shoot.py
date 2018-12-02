@@ -6,7 +6,7 @@ class Shoot:
 
     def __init__(self, x = 400, y = 300, velocity = 1):
         if Shoot.image == None:
-            Shoot.image = load_image('resource\\ball21x21.png')
+            Shoot.image = load_image('resource\\monster\\monster_shoot.png')
         self.x, self.y, self.velocity = x, y, velocity
 
     def draw(self):

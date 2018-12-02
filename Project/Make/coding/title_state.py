@@ -35,11 +35,11 @@ def enter():
     tutorial_bt_x, tutorial_bt_y = 1000 - 50, 300
     start_bt_x, start_bt_y = 1000 - 50, 550
 
-    image = load_image('resource\\title2.png')
-    start_bt = load_image('resource\\start_bt.png')
-    tutorial_bt = load_image('resource\\tutorial_bt.png')
+    image = load_image('resource\\ui\\title2.png')
+    start_bt = load_image('resource\\ui\\start_bt.png')
+    tutorial_bt = load_image('resource\\ui\\tutorial_bt.png')
 
-    title_bgm = load_music('resource\\Septentrion.mp3')
+    title_bgm = load_music('resource\\mp3\\Septentrion.mp3')
     title_bgm.set_volume(40)
     title_bgm.repeat_play()
 
@@ -72,7 +72,6 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_MOUSEMOTION:
             ms_x , ms_y = event.x , 1000 - 1 - event.y
-            print(ms_x , ms_y)
             update()
         else:
             if(event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):

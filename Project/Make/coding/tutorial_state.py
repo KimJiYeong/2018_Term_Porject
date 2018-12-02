@@ -15,7 +15,7 @@ def enter():
     global score
 
     tutorial_x, tutorial_y = 1200 // 2, 1000 // 2
-    image = load_image('resource\\tutorial.png')
+    image = load_image('resource\\ui\\tutorial.png')
 
     pass
 
